@@ -3,9 +3,11 @@ import numpy as np
 import os
 
 # 定义输入文件夹和输出文件夹
-folders = [r'C:\UltraLight-VMUNet-Output\3_severe_npdr\3_severe_npdr_256\3_severe_npdr_changename\3_severe_npdr_EX', r'C:\UltraLight-VMUNet-Output\3_severe_npdr\3_severe_npdr_256\3_severe_npdr_changename\3_severe_npdr_H',
-           r'C:\UltraLight-VMUNet-Output\3_severe_npdr\3_severe_npdr_256\3_severe_npdr_changename\3_severe_npdr_SE', r'C:\UltraLight-VMUNet-Output\3_severe_npdr\3_severe_npdr_256\3_severe_npdr_changename\3_severe_npdr_MA']
-output_folder = r'C:\UltraLight-VMUNet-Output\3_severe_npdr\3_severe_npdr_256\3_severe_npdr_changename\3_severe_npdr_combine'
+folders = [r'C:\UltraLight-VMUNet-Output\DDR_Output\4_pdr\EX_Output',
+           r'C:\UltraLight-VMUNet-Output\DDR_Output\4_pdr\H_Output',
+           r'C:\UltraLight-VMUNet-Output\DDR_Output\4_pdr\MA_Output',
+           r'C:\UltraLight-VMUNet-Output\DDR_Output\4_pdr\SE_Output']
+output_folder = r'C:\UltraLight-VMUNet-Output\DDR_Output\4_pdr\Combine'
 os.makedirs(output_folder, exist_ok=True)  # 创建输出文件夹
 
 # 定义颜色范围
@@ -13,7 +15,7 @@ color_ranges = [
     ([0, 100, 100], [10, 255, 255]),   # 红色
     ([100, 100, 100], [140, 255, 255]), # 蓝色
     ([40, 100, 100], [80, 255, 255]),   # 绿色
-    ([150, 100, 100], [180, 255, 255])  # 粉色
+    ([150, 50, 50], [180, 255, 255])  # 粉色
 ]
 
 # 获取所有文件名
@@ -36,10 +38,12 @@ for image_name in image_names:
 
                 # 初始化结果图像
                 if result is None:
-                    result = np.zeros_like(img)
+                    result = np.zeros_like(img)  # 创建一个与原图像大小相同的空白图像
 
+                # 将提取的颜色区域覆盖到空白图像上
                 result = cv2.add(result, colored_part)
 
-        # 保存每个处理后的同名图片到输出文件夹
+        # 保存拼接后的图像到输出文件夹
         output_path = os.path.join(output_folder, image_name)
         cv2.imwrite(output_path, result)
+
